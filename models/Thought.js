@@ -13,11 +13,11 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-// Getter  method to format the timestamp on query
+      // Getter  method to format the timestamp on query
       get: (timestamp) => new Date(timestamp).toLocaleDateString(),
     },
-//(These are like replies)
-//Array of nested documents created with the reactionSchema
+    //(These are like replies)
+    //Array of nested documents created with the reactionSchema
     reactions: [reactionSchema]
   },
   {
@@ -33,6 +33,36 @@ thoughtSchema
   .virtual('reactionCount').get(function () {
     return this.reactions.length;
   });
+
+  // Schema to create reaction schema only
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new mongoose.Types.ObjectId()
+    },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280
+    },
+    username: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+  // Getter  method to format the timestamp on query
+      get: timestamp => new Date(timestamp).toLocaleDateString(),
+    }
+  },
+  {
+    toJSON: {
+      getters: true
+    }
+  }
+);
 
 // Initialize Thought model
 const Thought = model('thought', thoughtSchema);

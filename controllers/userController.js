@@ -1,52 +1,106 @@
 const { User, Thought } = require('../models');
 
-module.exports = {
+const userController = {
+
   // Get all users
-  async getUsers(req, res) {
+  async getAllUsers(req, res) {
     try {
-      const users = await User.find();
+      const users = await User.find({});
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Get a single user
+
+  // Get single user
   async getSingleUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
-
-      if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
-      }
-
+      const user = await User
+        .findById(req.params.id)
+        .populate('thoughts')
+        .populate('friends');
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // create a new user
-  async createUser(req, res) {
+
+  // Create new user
+  async createNewUser(req, res) {
     try {
-      const user = await User.create(req.body);
+      const user = await User
+        .create(req.body);
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Delete a user and associated apps
+
+  // Update user
+  async updateUser(req, res) {
+    try {
+      const user = await User
+        .findByIdAndUpdate(
+          req.params.id,
+          req.body,
+          {
+            new: true,
+            runValidators: true
+          });
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // Delete user and their thoughts
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndDelete({ _id: req.params.userId });
+      const user = await User
+        .findByIdAndDelete(
+          req.params.id);
+      const thoughts = await Thought
+        .deleteMany(
+          // delete all thoughts inside user.thoughts array
+          { _id: { $in: user.thoughts } }
+        );
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 
-      if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
-      }
+  // Add new friend to users friend list
+  async addNewFriend(req, res) {
+    try {
+      const user = await User
+        .findByIdAndUpdate(
+          req.params.userId,
+  // If exisiting friend is present dont add (add to set)
+          { $addToSet: { friends: req.params.friendId } },
+          { new: true, runValidators: true }
+        );
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 
-      await Application.deleteMany({ _id: { $in: user.applications } });
-      res.json({ message: 'User and associated apps deleted!' })
+  // Delete friend from user's friend list
+  async deleteFriend(req, res) {
+    try {
+      const user = await User
+        .findByIdAndUpdate(
+          req.params.userId,
+  // Pull single friend id from friend's list
+          { $pull: { friends: req.params.friendId } },
+          { new: true, runValidators: true }
+        );
+      res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
   },
 };
+
+module.exports = userController;

@@ -1,28 +1,32 @@
 const router = require('express').Router();
+
 const {
-  getApplications,
-  getSingleApplication,
-  createApplication,
-  updateApplication,
-  deleteApplication,
-  addTag,
-  removeTag,
-} = require('../../controllers/appController');
+  getAllThoughts,
+  getSingleThought,
+  createThought,
+  updateThought,
+  deleteThought,
+  addNewReaction,
+  deleteReaction,
+} = require('../controllers/thoughtController');
 
-// /api/applications
-router.route('/').get(getApplications).post(createApplication);
+// Routes for /api/thoughts
+router.route('/')
+  .get(getAllThoughts)
+  .post(createThought);
 
-// /api/applications/:applicationId
-router
-  .route('/:applicationId')
-  .get(getSingleApplication)
-  .put(updateApplication)
-  .delete(deleteApplication);
+// Routes for /api/thoughts/:thoughtId
+router.route('/:thoughtId')
+  .get(getSingleThought)
+  .put(updateThought)
+  .delete(deleteThought);
 
-// /api/applications/:applicationId/tags
-router.route('/:applicationId/tags').post(addTag);
+// Routes for /api/thoughts/:thoughtId/reactions
+router.route('/:thoughtId/reactions')
+  .post(addNewReaction);
 
-// /api/applications/:applicationId/tags/:tagId
-router.route('/:applicationId/tags/:tagId').delete(removeTag);
+// Routes for /api/thoughts/:thoughtId/reactions/:reactionId
+router.route('/:thoughtId/reactions/:reactionId')
+  .delete(deleteReaction);
 
 module.exports = router;

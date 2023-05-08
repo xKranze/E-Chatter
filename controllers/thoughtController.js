@@ -44,8 +44,7 @@ const thoughtController = {
   //   res.status(500).json(err);
   // }
   // },
-//------------------------------------------------------------------
-
+  //------------------------------------------------------------------
 
   // Create new thought and associate it with a user id
   createThought(req, res) {
@@ -65,8 +64,8 @@ const thoughtController = {
         }
         res.json(user);
       })
-      .catch((err) => 
-      res.json(err));
+      .catch((err) =>
+        res.json(err));
   },
 
   // Updates thought and returns object with updated thought back to user. Which is why we put req.body in line 54 here.
@@ -105,7 +104,7 @@ const thoughtController = {
     }
   },
 
-  // Add new reaction to a thought
+  // Add new reaction to thought
   async addNewReaction(req, res) {
     try {
       const thought = await Thought

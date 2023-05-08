@@ -43,10 +43,7 @@ const userController = {
         .findByIdAndUpdate(
           req.params.id,
           req.body,
-          {
-            new: true,
-            runValidators: true
-          });
+          { new: true, runValidators: true });
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
@@ -76,7 +73,7 @@ const userController = {
       const user = await User
         .findByIdAndUpdate(
           req.params.userId,
-  // If exisiting friend is present dont add (add to set)
+          // If exisiting friend is present dont add (add to set)
           { $addToSet: { friends: req.params.friendId } },
           { new: true, runValidators: true }
         );
@@ -92,7 +89,7 @@ const userController = {
       const user = await User
         .findByIdAndUpdate(
           req.params.userId,
-  // Pull single friend id from friend's list
+          // Pull single friend id from friend's list
           { $pull: { friends: req.params.friendId } },
           { new: true, runValidators: true }
         );

@@ -1,5 +1,5 @@
+const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
-
 
 // Schema to create User model
 const userSchema = new Schema({
@@ -51,4 +51,11 @@ userSchema
 // Initialize our User model
 const User = model('user', userSchema);
 
+
+// //	{
+//   "username": "Brad",
+//   "email": "brad@yahoo.com",
+//   "thoughts": [],
+//   "friends": []
+// }
 module.exports = User;

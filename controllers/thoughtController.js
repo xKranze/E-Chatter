@@ -25,26 +25,6 @@ const thoughtController = {
     }
   },
 
-  //TODO want to figure out whats not working here this way
-  //async createThought(req, res) {
-  // try {
-  //   const thought = await Thought
-  //     .create(
-  //       req.body,
-  //       { new: true, runValidators: true }
-  //     );
-  //   const user = await User
-  //     .findByIdAndUpdate(
-  //       req.body.userId,
-  //       // Pushes thought._id into thoughts
-  //       { $push: { thoughts: thought._id } },
-  //     );
-  //   res.json(user);
-  // } catch (err) {
-  //   res.status(500).json(err);
-  // }
-  // },
-  //------------------------------------------------------------------
 
   // Create new thought and associate it with a user id
   createThought(req, res) {

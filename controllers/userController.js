@@ -12,6 +12,7 @@ const userController = {
     }
   },
 
+  // TODO FIX
   // Get single user
   async getSingleUser(req, res) {
     try {

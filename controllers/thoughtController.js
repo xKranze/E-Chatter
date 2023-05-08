@@ -25,24 +25,48 @@ const thoughtController = {
     }
   },
 
-  // Create a new thought and associate it with a user id
-  async createThought(req, res) {
-    try {
-      const thought = await Thought
-        .create(
-          req.body,
-          { new: true, runValidators: true }
-        );
-      const user = await User
-        .findByIdAndUpdate(
-          req.body.userId,
-          // Pushes thought._id into thoughts
+  //TODO want to figure out whats not working here this way
+  //async createThought(req, res) {
+  // try {
+  //   const thought = await Thought
+  //     .create(
+  //       req.body,
+  //       { new: true, runValidators: true }
+  //     );
+  //   const user = await User
+  //     .findByIdAndUpdate(
+  //       req.body.userId,
+  //       // Pushes thought._id into thoughts
+  //       { $push: { thoughts: thought._id } },
+  //     );
+  //   res.json(user);
+  // } catch (err) {
+  //   res.status(500).json(err);
+  // }
+  // },
+//------------------------------------------------------------------
+
+
+  // Create new thought and associate it with a user id
+  createThought(req, res) {
+    Thought
+      .create(req.body)
+      .then((thought) => {
+        return User.findOneAndUpdate(
+          { _id: req.body.userId },
           { $push: { thoughts: thought._id } },
+          { new: true }
         );
-      res.json(user);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+      })
+      .then((user) => {
+        if (!user) {
+          res.status(500).json(err);
+          return;
+        }
+        res.json(user);
+      })
+      .catch((err) => 
+      res.json(err));
   },
 
   // Updates thought and returns object with updated thought back to user. Which is why we put req.body in line 54 here.
@@ -59,6 +83,7 @@ const thoughtController = {
     }
   },
 
+  //TODO FIX-----------------------
   // Delete thought by id and remove from associated user
   async deleteThought(req, res) {
     try {
@@ -96,6 +121,7 @@ const thoughtController = {
     }
   },
 
+  //TODO FIX---------------------------------------
   // Delete reaction from thought
   async deleteReaction(req, res) {
     try {

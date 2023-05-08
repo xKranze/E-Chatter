@@ -29,7 +29,7 @@ Ypu will need to have Insomnia installed to test and can be downloaded here:  ht
 
 Please view the video demo link below to see how to use the application:
 
-<a href="placeholder">E-Chatter DEMO</a>
+<a href="https://drive.google.com/file/d/1fRMm6_ypwsbJhIsQ3bRWI9vye3A7QCMh/view">E-Chatter DEMO</a>
 
     
 ![alt text](./echatter.jpg)

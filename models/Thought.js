@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = require('mongoose');
-const router = require('express').Router();
+
 
 // Schema to create reaction schema only
 const reactionSchema = new Schema(

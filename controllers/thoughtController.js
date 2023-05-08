@@ -39,7 +39,7 @@ const thoughtController = {
           // Pushes thought._id into thoughts
           { $push: { thoughts: thought._id } },
         );
-      res.json(thought);
+      res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
